@@ -1,5 +1,4 @@
 import datetime
-import os
 
 from random import randint
 
@@ -21,3 +20,5 @@ def checkout(request, first_name, last_name, email, address, zipcode, place, pho
         OrderItem.objects.create(order=order, product=item['product'], price=item['price'], quantity=item['quantity'])
 
     return order.id
+
+

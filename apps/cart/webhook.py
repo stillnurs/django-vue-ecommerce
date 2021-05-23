@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .cart import Cart
 
 from apps.order.models import Order
-from apps.store.utilities import decrement_product_quantity, send_order_confirmation
+from apps.store.utilities import decrement_product_quantity, notify_vendor, send_order_confirmation
 
 @csrf_exempt
 def webhook(request):
@@ -33,5 +33,6 @@ def webhook(request):
 
         decrement_product_quantity(order)  
         send_order_confirmation(order)
+        notify_vendor(order)
         
     return HttpResponse(status=200)

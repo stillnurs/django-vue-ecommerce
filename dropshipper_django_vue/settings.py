@@ -45,6 +45,14 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'cart'
 LOGOUT_REDIRECT_URL = 'frontpage'
 
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_EMAIL_FROM = 'Drop-Ship <noreply@drop-ship.com>'
+
+
 # Cart
 
 SESSION_COOKIE_AGE = 86400
@@ -67,7 +75,8 @@ INSTALLED_APPS = [
     'apps.newsletter',
     'apps.order',
     'apps.store',
-    'apps.userprofile'
+    'apps.userprofile',
+    'apps.vendor'
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

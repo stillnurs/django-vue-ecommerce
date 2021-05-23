@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
 		<link rel="stylesheet" href="{% static 'main.css' %}">
 		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	 	<script src="{% static 'main.js' %}"></script>
 	</head>
 
 	<body>
@@ -85,6 +86,21 @@
 			<div class="columns">
 				<div class="column is-4">
 					<h2 class="subtitle">Drop-Ship</h2>
+				</div>
+				
+			<div class="columns">
+				<div class="column is-4">
+				{% if request.user.is_authenticated %}
+                	<a href="{% url 'vendor_admin' %}" class="navbar-item">Vendor admin</a>
+            	{% else %}
+				</div>
+			</div>
+			<div class="columns">
+				<div class="column is-4">
+                	<a href="{% url 'become_vendor' %}" class="navbar-item">Become vendor</a>
+				{% endif %}
+           			 	<a href="{% url 'vendors' %}" class="navbar-item">Vendors</a>
+				</div>
 				</div>
 
 				<div class="column is-8">

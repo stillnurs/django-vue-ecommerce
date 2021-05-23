@@ -50,6 +50,7 @@ def validate_payment(request):
 
     return JsonResponse({'success': True})
 
+
 def create_checkout_session(request):
     data = json.loads(request.body)
 
@@ -69,7 +70,7 @@ def create_checkout_session(request):
 
     cart = Cart(request)
     items = []
-    
+
     for item in cart:
         product = item['product']
 
@@ -95,7 +96,7 @@ def create_checkout_session(request):
     session = ''
     order_id = ''
     payment_intent = ''
-    
+
     if gateway == 'stripe':
         stripe.api_key = settings.STRIPE_API_KEY_HIDDEN
         session = stripe.checkout.Session.create(
@@ -116,11 +117,11 @@ def create_checkout_session(request):
 
     for item in cart:
         product = item['product']
-        total_price = total_price + (float(product.price) * int(item['quantity']))
+        total_price += float(product.price) * int(item['quantity'])
 
     if coupon_value > 0:
-        total_price = total_price * (coupon_value / 100)
-    
+        total_price *= coupon_value / 100
+
     if gateway == 'razorpay':
         order_amount = total_price * 100
         order_currency = 'INR'
@@ -131,7 +132,7 @@ def create_checkout_session(request):
         }
 
         payment_intent = client.order.create(data=data)
-    
+
     # PayPal
 
     if gateway == 'paypal':
@@ -166,9 +167,8 @@ def create_checkout_session(request):
         order.used_coupon = coupon_code
         order.save()
 
-    #
-
     return JsonResponse({'session': session, 'order': payment_intent})
+
 
 def api_add_to_cart(request):
     data = json.loads(request.body)
@@ -187,6 +187,7 @@ def api_add_to_cart(request):
         cart.add(product=product, quantity=quantity, update_quantity=True)
     
     return JsonResponse(jsonresponse)
+
 
 def api_remove_from_cart(request):
     data = json.loads(request.body)

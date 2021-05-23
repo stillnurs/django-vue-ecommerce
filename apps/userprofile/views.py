@@ -10,20 +10,23 @@ def signup(request):
         userprofileform = UserprofileForm(request.POST)
 
         if form.is_valid() and userprofileform.is_valid():
-            user = form.save()
-
-            userprofile = userprofileform.save(commit=False)
-            userprofile.user = user
-            userprofile.save()
-
-            login(request, user)
-
-            return redirect('frontpage')
+            return _extracted_from_signup_7(form, userprofileform, request)
     else:
         form = SignUpForm()
         userprofileform = UserprofileForm()
-    
+
     return render(request, 'signup.html', {'form': form, 'userprofileform': userprofileform})
+
+def _extracted_from_signup_7(form, userprofileform, request):
+    user = form.save()
+
+    userprofile = userprofileform.save(commit=False)
+    userprofile.user = user
+    userprofile.save()
+
+    login(request, user)
+
+    return redirect('frontpage')
 
 @login_required
 def myaccount(request):

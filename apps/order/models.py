@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from apps.store.models import Product
-
+from apps.vendor.models import Vendor
 class Order(models.Model):
     ORDERED = 'ordered'
     SHIPPED = 'shipped'
@@ -32,6 +32,7 @@ class Order(models.Model):
 
     payment_intent = models.CharField(max_length=255)
 
+    vendors = models.ManyToManyField(Vendor, related_name='orders')
     shipped_date = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=ORDERED)
 
@@ -44,6 +45,8 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='items', on_delete=models.DO_NOTHING)
+    vendor = models.ForeignKey(Vendor, related_name='items', on_delete=models.CASCADE)
+    vendor_paid = models.BooleanField(default=False)
     price = models.FloatField()
     quantity = models.IntegerField(default=1)
 

@@ -3,6 +3,7 @@ from django.core.files import File
 from django.db import models
 from PIL import Image
 from django.contrib.auth.models import User
+from apps.vendor.models import Vendor
 
 class Category(models.Model):
     parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, blank=True, null=True)
@@ -10,7 +11,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=255)
     ordering = models.IntegerField(default=0)
     is_featured = models.BooleanField(default=False)
-
+    
     class Meta:
         verbose_name_plural = 'Categories'
         ordering = ('ordering',)
@@ -24,6 +25,7 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     parent = models.ForeignKey('self', related_name='variants', on_delete=models.CASCADE, blank=True, null=True)
+    vendor = models.ForeignKey(Vendor, related_name='vendor_products', on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     description = models.TextField(blank=True, null=True)
