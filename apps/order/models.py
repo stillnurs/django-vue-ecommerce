@@ -1,8 +1,10 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 from apps.store.models import Product
 from apps.vendor.models import Vendor
+
+
 class Order(models.Model):
     ORDERED = 'ordered'
     SHIPPED = 'shipped'
@@ -43,11 +45,14 @@ class Order(models.Model):
         return sum(int(item.quantity) for item in self.items.all())
     
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='items', on_delete=models.DO_NOTHING)
-    vendor = models.ForeignKey(Vendor, related_name='items', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, 
+    related_name='items', on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, 
+    related_name='items', on_delete=models.DO_NOTHING, null=True)
+    vendor = models.ForeignKey(Vendor, 
+    related_name='items', on_delete=models.SET_NULL, null=True)
     vendor_paid = models.BooleanField(default=False)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):

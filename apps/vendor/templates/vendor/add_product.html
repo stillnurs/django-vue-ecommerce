@@ -9,11 +9,26 @@
         {% csrf_token %}
 
         {{ form.as_p }}
+    <div class="mb-6"></div>
+    <h2 class="subtitle">Images</h2>
 
+    <form method="post" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ image_form.as_p }}
+        
+        {{ image_form.as_p }}
+
+        
+    <hr>
         <div class="field">
             <div class="control">
                 <button class="button is-dark is-uppercase">Submit</button>
             </div>
         </div>
+        </div>
+        </div>
     </form>
+
+    
 {% endblock %}

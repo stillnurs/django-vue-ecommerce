@@ -1,12 +1,15 @@
 from io import BytesIO
+
+from django.contrib.auth.models import User
 from django.core.files import File
 from django.db import models
 from PIL import Image
-from django.contrib.auth.models import User
+
 from apps.vendor.models import Vendor
 
+
 class Category(models.Model):
-    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ForeignKey('self', related_name='children', on_delete=models.SET_NULL, blank=True, null=True)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     ordering = models.IntegerField(default=0)
@@ -23,9 +26,9 @@ class Category(models.Model):
         return '/%s/' % (self.slug)
 
 class Product(models.Model):
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
-    parent = models.ForeignKey('self', related_name='variants', on_delete=models.CASCADE, blank=True, null=True)
-    vendor = models.ForeignKey(Vendor, related_name='vendor_products', on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, null=True)
+    parent = models.ForeignKey('self', related_name='variants', on_delete=models.SET_NULL, blank=True, null=True)
+    vendor = models.ForeignKey(Vendor, related_name='vendor_products', on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -82,7 +85,7 @@ class Product(models.Model):
             return 0
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.SET_NULL, null=True)
 
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
@@ -103,8 +106,8 @@ class ProductImage(models.Model):
         return File(thumb_io, name=image.name)
 
 class ProductReview(models.Model):
-    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, related_name='reviews', on_delete=models.SET_NULL, null=True)
 
     content = models.TextField(blank=True, null=True)
     stars = models.IntegerField()

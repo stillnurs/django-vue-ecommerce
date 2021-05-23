@@ -59,15 +59,21 @@
 						<a href="{% url 'cart' %}" class="button is-primary">Cart ([[ numItems ]])</a>
 					</div>
 
-					{% if request.user.is_authenticated %}
+					{% if request.user.is_authenticated and not request.user.vendor.is_vendor %}
 						<div class="navbar-item">
-							<a href="{% url 'myaccount' %}" class="button is-light">My account</a>
+							<a href="{% url 'myaccount' %}" class="button is-light">
+							{{request.user.name}}</a>
 						</div>
+					{% elif request.user.vendor.is_vendor %}
+						<div class="navbar-item">
+								<a href="{% url 'vendor_admin' %}" class="button is-light">{{request.user.vendor.name}}</a>
+							</div>
 					{% else %}
 						<div class="navbar-item">
 							<div class="buttons">
 								<a href="{% url 'signup' %}" class="button is-primary"><strong>Sign up</strong></a>
 								<a href="{% url 'login' %}" class="button is-light">Log in</a>
+								<a href="{% url 'vendor_login' %}" class="button is-gray">Log in as Vendor</a>
 							</div>
 						</div>
 					{% endif %}
@@ -90,14 +96,16 @@
 				
 			<div class="columns">
 				<div class="column is-4">
-				{% if request.user.is_authenticated %}
+				{% if request.user.vendor.is_vendor %}
                 	<a href="{% url 'vendor_admin' %}" class="navbar-item">Vendor admin</a>
             	{% else %}
 				</div>
 			</div>
 			<div class="columns">
 				<div class="column is-4">
-                	<a href="{% url 'become_vendor' %}" class="navbar-item">Become vendor</a>
+                	<a href="{% url 'become_vendor' %}" class="navbar-item">
+					Become vendor
+					<a>
 				{% endif %}
            			 	<a href="{% url 'vendors' %}" class="navbar-item">Vendors</a>
 				</div>

@@ -1,13 +1,14 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
-from django.shortcuts import render, redirect, get_object_or_404
 
-from .models import Vendor
 from apps.store.models import Category, Product, ProductImage
 
 from .forms import ProductForm, ProductImageForm
+from .models import Vendor
+
 
 def become_vendor(request):
     if request.method == 'POST':
@@ -20,17 +21,18 @@ def become_vendor(request):
 
             vendor = Vendor.objects.create(name=user.username, created_by=user)
 
-            return redirect('frontpage')
+            return redirect('vendor_admin')
     else:
         form = UserCreationForm()
 
     return render(request, 'vendor/become_vendor.html', {'form': form})
 
+
 @login_required
 def vendor_admin(request, slug=None):
     vendor = request.user.vendor
     products = vendor.vendor_products.all()
-    category = get_object_or_404(Category)
+    category = Category.objects.all()
     orders = vendor.orders.all()
 
     for order in orders:
@@ -46,6 +48,7 @@ def vendor_admin(request, slug=None):
                     order.vendor_amount += item.get_total_price()
                     order.fully_paid = False
 
+    
     return render(request, 'vendor/vendor_admin.html', 
                   {'vendor': vendor, 'products': products, 
                    'category': category, 'orders': orders})
@@ -70,7 +73,7 @@ def add_product(request):
 @login_required
 def edit_product(request, pk):
     vendor = request.user.vendor
-    product = vendor.products.get(pk=pk)
+    product = vendor.vendor_products.get(pk=pk)
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)

@@ -3,35 +3,36 @@
 {% block title %}Become vendor | {% endblock %}
 
 {% block content %}
-    <h1 class="title">Become vendor</h1>
-<hr>
 <div class="columns">
-    <div class="column is-3">
-        <form method="post" action=".">
-                {% csrf_token %}
-                <div class="field">  
-    
-                {{ form.as_p }}
-            </div> 
+<hr>
+    <div class="column is-6 is-offset-3">
+        <h1 class="title">Sign up to Become vendor</h1>
 
-                <div class="field">
-            <div class="control">
-                <button class="button is-dark is-uppercase">Sign up</button>
+        <form method="post" action=".">
+            {% csrf_token %}
+    
+            {{ form.as_p }}
+    
+            <div class="field">
+                <div class="control">
+                    <button class="button is-success">Sign up</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
     </div>
 </div>
 
 
     <hr>
-    <h2 class="subtitle">Already have an account?</h2>
 </div>
+<div class='column is-6 is-offset-3'>
+    <h2 class="subtitle">Already have an account?</h2>
 <div class="field">
 <div class="control">
  <button class="button is-dark is-uppercase">
-    <a href="{% url 'login' %}" >Log in</a>
+    <a href="{% url 'vendor_login' %}">Log in</a>
     </button>
+</div>
 </div>
 </div>
 {% endblock %}

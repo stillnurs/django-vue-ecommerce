@@ -20,9 +20,7 @@ PAYPAL_API_KEY_PUBLISHABLE = "Ad6CnLmBm-KENk4J4jkxhRE4lDoSPssFBP-YSEoLv5TwmpSqPU
 PAYPAL_API_KEY_HIDDEN = "EG6G7xT7tlKjZ49tb9eEZSl2znvE4Cs5EVfm4UcQxAzHsb7MrD8U88ziOlsjVESD1pTc9tn-M3HkJPei"
 
 import os
-
 from pathlib import Path
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -42,7 +40,7 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'cart'
+LOGIN_REDIRECT_URL = 'frontpage'
 LOGOUT_REDIRECT_URL = 'frontpage'
 
 EMAIL_HOST = 'smtp.sendgrid.net'
